@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Google Map</title>
+    <style>
+      #map {
+        height: 500px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Google Map</h1>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        //Map options
+        var options = {
+          zoom: 8,
+          center: { lat: 60.1699, lng: 24.9384 }
+        };
+
+        //New map
+        var map = new google.maps.Map(document.getElementById("map"), options);
+
+        //Listen for click on map
+
+        google.maps.event.addListener(map, "click", function(event) {
+          //Add marker
+          addMarker({ coords: event.latLng });
+        });
+
+        /* //Add marker
+        var marker = new google.maps.Marker({
+          position: { lat: 60.2048, lng: 24.6536 },
+          map: map,
+          //Adding custom icon
+          icon:
+            "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+        });
+
+        //Add info in the marker when clicked
+        var infoWindow = new google.maps.InfoWindow({
+          content: "<h3>Espoon Keskus</h3>"
+        });
+
+        marker.addListener("click", function() {
+          infoWindow.open(map, marker);
+        }); */
+
+        //Array of markers
+
+        var markers = [
+          {
+            coords: { lat: 60.2048, lng: 24.6536 },
+            iconImage:
+              "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+            content: "<h3>Espoon Keskus</h3>"
+          },
+          {
+            coords: { lat: 60.3932, lng: 25.6653 },
+            content: "<h3>Porvoo</h3>"
+          },
+          { coords: { lat: 60.2934, lng: 25.0378 } }
+        ];
+
+        //Loop through markers
+        for (let i = 0; i < markers.length; i++) {
+          //Add marker
+          addMarker(markers[i]);
+        }
+
+        //Add maker function
+        function addMarker(props) {
+          var marker = new google.maps.Marker({
+            position: props.coords,
+            map: map
+            //Adding custom icon
+            //icon: props.iconImage
+          });
+
+          //Check for custom icon
+          if (props.iconImage) {
+            //Set icon image
+            marker.setIcon(props.iconImage);
+          }
+
+          if (props.content) {
+            var infoWindow = new google.maps.InfoWindow({
+              content: props.content
+            });
+
+            marker.addListener("click", function() {
+              infoWindow.open(map, marker);
+            });
+          }
+        }
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5_H7g1t7sd8ueCIgTsyyS5gJ7amT1mtY&callback=initMap"
+    ></script>
+  </body>
+</html>
